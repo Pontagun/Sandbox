@@ -20,36 +20,33 @@ public class NativeAvatar : MonoBehaviour
             CreatedJoint[q] = Instantiate(PrefabJoint);
             CreatedJoint[q].transform.SetParent(transform);
         }
-        Debug.Log(typeJoint.Length);
         message = "Skeleton created";
     }
 
     // Update is called once per frame
+
     void Update()
     {
-        void Update()
+        if (NuitrackManager.Users.Current != null && NuitrackManager.Users.Current.Skeleton != null)
         {
-            if (NuitrackManager.Users.Current != null && NuitrackManager.Users.Current.Skeleton != null)
-            {
-                message = "User found";
+            message = "User found";
 
-                for (int q = 0; q < typeJoint.Length; q++)
-                {
-                    UserData.SkeletonData.Joint joint = NuitrackManager.Users.Current.Skeleton.GetJoint(typeJoint[q]);
-                    CreatedJoint[q].transform.localPosition = joint.Position;
-                }
-            }
-            else
+            for (int q = 0; q < typeJoint.Length; q++)
             {
-                message = "User not found";
+                UserData.SkeletonData.Joint joint = NuitrackManager.Users.Current.Skeleton.GetJoint(typeJoint[q]);
+                CreatedJoint[q].transform.localPosition = joint.Position;
             }
+        }
+        else
+        {
+            message = "User not found";
         }
     }
 
     void OnGUI()
-    {
-        GUI.color = Color.red;
-        GUI.skin.label.fontSize = 50;
-        GUILayout.Label(message);
+        {
+            GUI.color = Color.red;
+            GUI.skin.label.fontSize = 50;
+            GUILayout.Label(message);
+        }
     }
-}
